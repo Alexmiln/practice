@@ -1,0 +1,43 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+#game
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3d214b;
+    width: 100vw;
+    height: 100vh;
+}
+
+#game__canvas
+{
+    display:block;
+}
+
+.game__header
+{
+    
+}
+
+.score
+{
+
+}
+
+.score__count
+{
+    font: 600 24px/32px "Open Sans", sans-serif;
+    color: azure;
+}
+
+.canvas-wrapper
+{
+
+}
