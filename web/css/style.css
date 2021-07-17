@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     background-color: #3d214b;
     width: 100vw;
     height: 100vh;
@@ -18,17 +19,20 @@
 
 #game__canvas
 {
-    display:block;
+    display: block;
 }
 
 .game__header
 {
-    
+    display: flex;
+    justify-content: space-between;
 }
 
 .score
 {
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .score__count
@@ -39,5 +43,8 @@
 
 .canvas-wrapper
 {
-
+display: block;
+/* border: 3px solid #00d33593; */
+border-radius: 5px;
 }
+

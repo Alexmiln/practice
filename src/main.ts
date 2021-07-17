@@ -1,15 +1,6 @@
-import GameController from "./GameController";
-
-export function main(): void
-{
-    const gameController = new GameController();
-
-    while (true)
-    {
-        document.addEventListener('keydown', (event) => {
-            gameController.processTouch(event.key);
-        });
-    }
-}
-
-main();
+import Game from './Game'; 
+window.addEventListener('load', () => {
+    const game = new Game();
+    game.start();
+    window.addEventListener('unload', () => game.stop());
+})

@@ -1,71 +1,31 @@
-import {Movement} from "./GameController";
-import {CellType} from "./Cell";
-import Cell from "./Cell";
+import {GameConfig} from "./Config";
 
-export default class GameField
-{
-    private readonly Column: number = 100;
-    private readonly Line: number = 100;
+export default class Gamefield {
 
-    private readonly SnakeHead: Cell = {x: 5, y: 5};
-    private readonly SnakeTail: Cell = {x: 6, y: 5};
+    private canvas: HTMLCanvasElement;
+    private context: any;
+    private width = GameConfig.width * GameConfig.cellSize;
+    private height = GameConfig.height * GameConfig.cellSize;
 
-    private field: Array<Array<Cell>>;
-    private snake!: Snake;
-
-    constructor()
-    {
-        this.field = this.initField();
+    constructor() {
+        let canvas = document.getElementById('#game__canvas') as HTMLCanvasElement;
+        let context = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.context = context;
+        this.drawField();
     }
 
-    public update(direction: Movement): void
-    {
-        //отобразить значение -> newDirection
-        //Snake.moveHead(direction);
-        //Snake.moveTail(newDirection);
-    }
-
-    private initField(): Array<Array<Cell>>
-    {
-        let field: Array<Array<Cell>> = [];
-
-        for (let i = 0; i < this.Column; i++)
-        {
-            for (let j = 0; j < this.Line; j++)
-            {
-                field[i][j] = new Cell(CellType.Void);
+    public drawField(): void {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.context.fillStyle = "#eeeed2";
+        this.context.fillRect(0, 0, this.width, this.height);
+        this.context.fillStyle = "#696";
+        for (let i = 0; i < GameConfig.width; i += 2) {
+            for (let j = 0; j < GameConfig.height; j += 2) {
+                this.context.fillRect((i * GameConfig.cellSize),(j * GameConfig.cellSize), GameConfig.cellSize, GameConfig.cellSize);
+                this.context.fillRect(((i+1) * GameConfig.cellSize),((j+1) * GameConfig.cellSize), GameConfig.cellSize, GameConfig.cellSize);
             }
         }
-
-        return this.spawnApple(this.spawnSnake(field));
-    }
-
-    private spawnSnake(field: Array<Array<Cell>>): Array<Array<Cell>>
-    {
-        this.snake = Snake(this.SnakeHead, this.SnakeTail);
-
-        field[this.SnakeHead.x][this.SnakeHead.y] = CellType.Snake;
-        field[this.SnakeTail.x][this.SnakeTail.y] = CellType.Snake;
-
-        return field;
-    }
-
-    private spawnApple(field: Array<Array<Cell>>): Array<Array<Cell>>
-    {
-        let isGenerated = false;
-
-        do
-        {
-            const x: number = Math.random();
-            const y: number = Math.random();
-
-            if (field[x][y] !== CellType.Snake)
-            {
-                field[x][y] = CellType.Apple;
-                isGenerated = true;
-            }
-        } while (isGenerated);
-
-        return field;
     }
 }
