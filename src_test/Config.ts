@@ -4,3 +4,10 @@ export const GameConfig = {
     cellSize: 16
 }
 
+export enum Direction
+{
+    Left,
+    Right,
+    Up,
+    Down,
+}
