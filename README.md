@@ -1,5 +1,5 @@
-# Шаблон для маленького web-проекта на TypeScript 
+# Game Snake-2d (TypeScript)
 ```
-git clone https://github.com/vasiliy-uskov/typescript_project_template/ <project name>
 npm install
+npm run build
 ```
