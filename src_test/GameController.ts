@@ -1,11 +1,13 @@
 import Snake from "./Snake";
 import Apple from "./Apple";
 import {Direction, GameConfig} from "./Config";
+import SupportFunctions from "./supportFunctions";
 import DrawProvider from "./DrawProvider";
 import Coordinate from "./Coordinate";
 
 export default class GameController {
 
+    private supportFunction: SupportFunctions;
     private apple: Apple;
     private snake: Snake;
     private drawProvider: DrawProvider;
@@ -13,6 +15,7 @@ export default class GameController {
     private gameIsOver: boolean = false;
 
     constructor() {
+        this.supportFunction = new SupportFunctions();
         this.apple = new Apple();
         this.snake = new Snake();
         this.drawProvider = new DrawProvider();
@@ -41,34 +44,21 @@ export default class GameController {
     }
 
     private updateGameState() {
-        if (Coordinate.checkCoordinates(this.snake.getNextHeadPosition(), this.apple.getPosition())) {
-            //змейка скушает яблоко
-            this.snake.move();
-            // this.snake.grow();
-            this.spawnApple();
-            this.score++;
-            return;
+        if (!this.gameIsOver) {
+            this.checkEatApple()
+            this.checkEatTail();
+            this.checkEatWall()
+    
+            if (!this.gameIsOver) {this.snake.move();};
         }
-
-        if (this.checkSnakeEqualToObject(this.snake.getNextHeadPosition())) {
-            this.gameIsOver = true;
-            return;
-        }
-
-        if (this.snake.getNextHeadPosition().getX() < 1 && this.snake.getNextHeadPosition().getX() > GameConfig.width &&
-            this.snake.getNextHeadPosition().getY() < 1 && this.snake.getNextHeadPosition().getY() > GameConfig.height) {
-            this.gameIsOver = true;
-            return;
-        }
-
-        this.snake.move();
     }
 
     private spawnApple(): void {
         let applePosition: Coordinate;
         do {
-           applePosition = this.apple.spawn();
+           applePosition = this.getNewApplePosition();
         } while (this.checkSnakeEqualToObject(applePosition));
+        this.apple.setPosition(applePosition);
     }
 
     private checkSnakeEqualToObject(objectPosition: Coordinate): boolean {
@@ -79,5 +69,36 @@ export default class GameController {
         return result.every(value => value);
     }
 
+    private getNewApplePosition(): Coordinate{
+            let newPosition: Coordinate = new Coordinate(this.supportFunction.getRandomInt(0, GameConfig.width), this.supportFunction.getRandomInt(0, GameConfig.height));
+    
+            return newPosition;
+    }
 
+    private checkEatApple(): void {
+        if (Coordinate.checkCoordinates(this.snake.getNextHeadPosition(), this.apple.getPosition())) {
+            this.spawnApple();
+            this.snake.move();
+            this.snake.grow();
+            this.score++;
+            return;
+        }
+    }
+
+    private checkEatTail(): void {
+        let positionHead: Coordinate = this.snake.getNextHeadPosition()
+        if (this.checkSnakeEqualToObject(positionHead)) {
+            this.gameIsOver = true;
+            return;
+        }
+    }
+
+    private checkEatWall(): void {
+        let positionHead: Coordinate = this.snake.getNextHeadPosition()
+        if ((positionHead.getX() < 1 || positionHead.getX() > GameConfig.width) ||
+            (positionHead.getY() < 1 || positionHead.getY() > GameConfig.height)) {
+            this.gameIsOver = true;
+            return;
+        }
+    }
 }
