@@ -16,8 +16,6 @@ export default class DrawProvider
 
         this.canvas.width = this.width;
         this.canvas.height = this.height;
-
-        this.drawField();
     }
 
     public drawApple(applePosition: Coordinate): void {
@@ -48,7 +46,7 @@ export default class DrawProvider
         this.scoreBlock.innerHTML = '' + score;
     }
 
-    private drawField(): void {
+    public drawField(): void {
         this.context.fillStyle = "#E9CDC7";
         this.context.fillRect(0, 0, this.width, this.height);
         this.context.fillStyle = "#F5D7D0";

@@ -34,6 +34,7 @@ export default class GameController {
     }
 
     private draw() {
+        this.drawProvider.drawField();
         this.drawProvider.drawSnake(this.snake.getPosition());
         this.drawProvider.drawApple(this.apple.getPosition());
         this.drawProvider.drawScore(this.score);
