@@ -1,13 +1,16 @@
 import GameController from "./GameController"
-import {Direction} from "./Config";
+import {Direction, GameConfig} from "./Config";
 export default class Game {
     private gameController :GameController;
     private gameIsOver: boolean;
+    private frame: number = 0;
+    private frameMax: number = GameConfig.frameMax;
 
     constructor() {
         this.initEventListeners();
         this.gameController = new GameController();
         this.gameIsOver = this.gameController.isOver();
+        this.initGameLoop = this.initGameLoop.bind(this);
     }
 
     public start(): void {
@@ -26,7 +29,10 @@ export default class Game {
     private initGameLoop() {
         requestAnimationFrame(() => {
             if (!this.gameIsOver) {
-                this.tick();
+                if ((++this.frame >= this.frameMax)) {
+                    this.tick();
+                    this.frame = 0;
+                }
                 this.initGameLoop();
             }
         })
